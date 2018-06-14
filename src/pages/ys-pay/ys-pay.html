@@ -24,15 +24,19 @@
 
     <ion-item>
       <ion-label fixed>流水号</ion-label>
-      <ion-input type="text"  [(ngModel)]="invNO"></ion-input>
+      <ion-input type="text" [(ngModel)]="invNO"></ion-input>
     </ion-item>
 
   </ion-list>
-<p>
-  <button ion-button color="primary" (click)="consume()">消费</button>
-  <button ion-button color="primary" (click)="revoke()">撤销</button>
-  <button ion-button color="primary" (click)="returnGoods()">退货</button>
-  <button ion-button color="primary" (click)="settlement()">结算</button>
-</p>
+  <p>
+    <button ion-button color="primary" (click)="consume()">消费</button>
+    <button ion-button color="primary" (click)="revoke()">撤销</button>
+    <button ion-button color="primary" (click)="refund()">退货</button>
+    <button ion-button color="primary" (click)="transactionQuery()">结算</button>
+  </p>
   <h5>{{result|json}}</h5>
 </ion-content>
+
+
+
+

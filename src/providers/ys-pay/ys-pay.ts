@@ -1,29 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {AmountCalculationProvider} from "../../providers/amount-calculation/amount-calculation";
+import {AmountCalculationProvider} from "../amount-calculation/amount-calculation";
 
 declare let cordova: any;
-
-
-/*
-  Generated class for the YsPayProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class YsPayProvider {
-
-  mallCode = "wxtd001";
-  pos_no = "p001";
-  tellerNo = "t001";
-  mVoucher = "123456211344";
-  mpayType = "001";
-  minvNo = "000000";
-  msysTrace = "000000";
-  txnTime = "0312121212";
-
   str: string;
 
   constructor(public http: HttpClient,
@@ -31,38 +13,50 @@ export class YsPayProvider {
     console.log('Hello YsPayProvider Provider');
   }
 
-//   cordova.plugins.A8PayInvoke.coolMethod('hello,cordova!', (res) => {
-//   alert(res)
-// }, (err) => {
-//   alert(err);
-// })
+
+  // 格式化日期
+  formatDate(fmt) { //author: meizz
+    let date = new Date();
+    var o = {
+      "M+": date.getMonth() + 1, //月份
+      "d+": date.getDate(), //日
+      "H+": date.getHours(), //小时
+      "m+": date.getMinutes(), //分z
+      "s+": date.getSeconds(), //秒
+      "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+      "S": date.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+  }
 
   consume(txnAmt: number): Observable<any> {
-    let newTxnAmt = this.formatAmt(txnAmt);
-    this.str = "txnAmt=" + newTxnAmt +
-      "&txnType=C" +
-      "&mallCode=" + this.mallCode +
-      "&posNo=" + this.pos_no +
-      "&voucher=" + this.mVoucher +
-      "&payType=" + this.mpayType +
-      "&invNo=" + this.minvNo +
-      "&sysTrace=" + this.msysTrace +
-      "&tellerNo=" + this.tellerNo +
-      "&txnTime=" + this.txnTime;
+
+    let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
+    this.str =
+      "TxnType=101" +
+      "&MerchantTxnNo=10000001" +
+      "&TxnAmt=" + txnAmt +
+      "&PayMode=1" +
+      "&CurrencyCode=156" +
+      "&TxnReqTime=" + TxnReqTime +
+      "&PermitDisctAmt=1.11";
+
     return Observable.create((ob) => {
       cordova.plugins.A8PayInvoke.invokeJL({
         /* params */
-        "uri": "comlink://bankpos?" + this.str,
-        "category": "mispos",
-        "intent": "comlink",
+        "uri": "sssoft://sssoft.uri.activity/payTrans?" + this.str,
+        "intent": "android.sssoft.schemeurl.activity",
         "intentstart": "startActivityForResult"
       }, {}, (result) => {
-        let rc = result['rc'];
-        let rep = result['repText'];
-        if (rc != '0000') {
+        // let rc = result['rc'];
+        let rep = result['RespCode'];
+        if (rep != '0000') {
           ob.next(result);
         } else {
-          ob.error(rep);
+          ob.error(result);
         }
       }, (error) => {
         ob.error(error);
@@ -70,33 +64,30 @@ export class YsPayProvider {
     })
   }
 
-  revoke(txnAmt: number, invNo: string) {
-    let newTxnAmt = this.formatAmt(txnAmt);
-    this.str = "txnAmt=" + newTxnAmt +
-      "&txnType=D" +
-      "&mallCode=" + this.mallCode +
-      "&posNo=" + this.pos_no +
-      "&voucher=" + this.mVoucher +
-      "&payType=" + this.mpayType +
-      "&invNo=" + invNo +
-      "&sysTrace=" + this.msysTrace +
-      "&tellerNo=" + this.tellerNo +
-      "&txnTime=" + this.txnTime;
+  revoke(txnAmt: number, txnData: string) {
+
+
+    let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
+    this.str =
+      "TxnType=102" +
+      "&RefundAmt=" + txnAmt +
+      "&PayMode=1" +
+      "&OrgMultData=" + txnData +
+      "&CurrencyCode=156" +
+      "&TxnReqTime=" + TxnReqTime;
+
     return Observable.create(ob => {
       cordova.plugins.A8PayInvoke.invokeJL({
-        /* params */
-        "uri": "comlink://bankpos?" + this.str,
-        "category": "mispos",
-        "intent": "comlink",
+        "uri": "sssoft://sssoft.uri.activity/payTrans?" + this.str,
+        "intent": "android.sssoft.schemeurl.activity",
         "intentstart": "startActivityForResult"
       }, {}, (result) => {
         console.log(result);
-        let rc = result['rc'];
-        let rep = result['repText'];
-        if (rc != '0000') {
+        let rep = result['RespCode'];
+        if (rep != '0000') {
           ob.next(result);
         } else {
-          ob.error(rep);
+          ob.error(result);
         }
       }, (error) => {
         ob.error(error);
@@ -105,22 +96,43 @@ export class YsPayProvider {
     });
   }
 
-  returnGoods(txnAmt: number, sysTrace: string) {
-    let newTxnAmt = this.formatAmt(txnAmt);
+  refund(txnAmt: number, invNo: string,txnData:string) {
+    let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
     this.str =
-      "&txnType=R" +
-      "&txnAmt=" + newTxnAmt +
-      "&mallCode=" + this.mallCode +
-      "&posNo=" + this.pos_no +
-      "&tellerNo=" + this.tellerNo +
-      "&voucher=" + this.mVoucher +
-      "&payType=" + this.mpayType +
-      "&sysTrace=" + sysTrace +
-      "&authNo=123456" +
-      "&batchNo=123456" +
-      "&orgTxnTime=1212121212" +
-      "&rrn=123456" +
-      "&tradeNo=123456";
+      "TxnType=103" +
+      "&RefundTxnNo=000087"  +
+      "&RefundAmt=" + txnAmt +
+      "&PayMode=1" +
+      "&CurrencyCode=156" +
+      "&TxnReqTime=" + TxnReqTime;
+
+    return Observable.create(ob => {
+      cordova.plugins.A8PayInvoke.invokeJL({
+        "uri": "sssoft://sssoft.uri.activity/payTrans?" + this.str,
+        "intent": "android.sssoft.schemeurl.activity",
+        "intentstart": "startActivityForResult"
+      }, {}, (result) => {
+        let rep = result['RespCode'];
+        if (rep != '0000') {
+          ob.next(result);
+        } else {
+          ob.error(result);
+        }
+      }, (error) => {
+        ob.next(error);
+      });
+
+    })
+
+  }
+
+  transactionQuery(invNo: number) {
+
+    let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
+    this.str =
+      "TxnType=104" +
+      "&OrgTxnNo=" + invNo;
+
 
     return Observable.create(ob => {
       cordova.plugins.A8PayInvoke.invokeJL({
@@ -134,68 +146,7 @@ export class YsPayProvider {
         if (rc != '0000') {
           ob.next(result);
         } else {
-          ob.error(rc);
-        }
-      }, (error) => {
-        ob.next(error);
-      });
-
-    })
-
-  }
-
-  settlement(txnAmt: number) {
-    /*    cordova.plugins.A8PayInvoke.invokeJL({
-          /!* params *!/
-          "uri": "app://bankpos",
-          "category": "mispos",
-          "intent": "comlink",
-          "intentstart": "startActivityForResult"
-        }, {
-          "txnType": "S",
-          "txnAmt": "000000000001",
-          "mallCode": "SC01",
-          "posNo": "8001",
-          "tellerNo": "0092",
-          "voucher": "180605000012",
-          "payType": "001",
-          "sysTrace": "123456",
-          "invNo": "000023"
-        }, (result) => {
-          data(result);
-        }, (error) => {
-          data(error);
-        });*/
-
-    let newTxnAmt = this.formatAmt(txnAmt);
-    this.str =
-      "&txnType=S" +
-      "&txnAmt=" + newTxnAmt +
-      "&mallCode=" + this.mallCode +
-      "&posNo=" + this.pos_no +
-      "&tellerNo=" + this.tellerNo +
-      "&voucher=" + this.mVoucher +
-      "&payType=" + this.mpayType +
-      "&sysTrace=123456" +
-      "&authNo=123456" +
-      "&batchNo=123456" +
-      "&orgTxnTime=1212121212" +
-      "&rrn=123456" +
-      "&tradeNo=123456";
-
-    return Observable.create(ob => {
-      cordova.plugins.A8PayInvoke.invokeJL({
-        /* params */
-        "uri": "comlink://bankpos?" + this.str,
-        "category": "mispos",
-        "intent": "comlink",
-        "intentstart": "startActivityForResult"
-      }, {}, (result) => {
-        let rc = result['rc'];
-        if (rc != '0000') {
-          ob.next(result);
-        } else {
-          ob.error(rc);
+          ob.error(result);
         }
       }, (error) => {
         ob.next(error);
@@ -206,9 +157,4 @@ export class YsPayProvider {
 
   }
 
-  formatAmt(num: number) {
-    let temp;
-    temp = (this.amtCount.multiply(num, 100)).toString();
-    return (Array(12).join('0') + temp.replace(".", "")).slice(-12);
-  }
 }

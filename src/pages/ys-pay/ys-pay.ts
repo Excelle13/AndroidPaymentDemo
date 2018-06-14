@@ -12,6 +12,8 @@ export class YsPayPage {
   invNO;
   result;
 
+  consumeData;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public ysPay: YsPayProvider,
@@ -26,29 +28,33 @@ export class YsPayPage {
   consume() {
     this.ysPay.consume(this.txnAmt).subscribe((data) => {
       this.result = data;
+      this.consumeData = data;
     }, err => {
       this.result = err;
     })
   }
 
   revoke() {
-    this.ysPay.revoke(this.txnAmt,this.invNO).subscribe((data) => {
+
+    console.log("消费成功返回来的数据--", this.consumeData);
+    console.log("消费成功返回来的数据--", this.consumeData['RRN']);
+    this.ysPay.revoke(this.txnAmt, this.consumeData['TxnData']).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;
     })
   }
 
-  returnGoods() {
-    this.ysPay.returnGoods(this.txnAmt,this.invNO).subscribe((data) => {
+  refund() {
+    this.ysPay.refund(this.txnAmt, this.invNO,this.consumeData['TxnData']).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;
     })
   }
 
-  settlement() {
-    this.ysPay.settlement(this.txnAmt).subscribe((data) => {
+  transactionQuery() {
+    this.ysPay.transactionQuery(this.invNO).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;
