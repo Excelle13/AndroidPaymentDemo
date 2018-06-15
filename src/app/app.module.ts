@@ -14,6 +14,8 @@ import {JlPayProvider} from '../providers/jl-pay/jl-pay';
 import {YsPayProvider} from '../providers/ys-pay/ys-pay';
 import {HttpClientModule} from "@angular/common/http";
 import {AmountCalculationProvider} from '../providers/amount-calculation/amount-calculation';
+import { NjlPayProvider } from '../providers/njl-pay/njl-pay';
+import { NysPayProvider } from '../providers/nys-pay/nys-pay';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import {AmountCalculationProvider} from '../providers/amount-calculation/amount-
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     JlPayProvider,
     YsPayProvider,
-    AmountCalculationProvider
+    AmountCalculationProvider,
+    NjlPayProvider,
+    NysPayProvider
   ]
 })
 export class AppModule {

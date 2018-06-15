@@ -26,8 +26,11 @@
     "@ionic-native/status-bar": "4.7.0",
     "@ionic/storage": "2.1.3",
     "@types/big.js": "^4.0.4",
-    "big.js": "^5.0.3",
     "a8payinvoke": "file:../CordovaPlugin/A8PayInvoke",
+    "a8resplugin": "file:../CordovaPlugin/A8ResPlugin",
+    "big.js": "^5.0.3",
+    "com.ttebd.a8PayInvoke": "D:\\IonicProjects\\CordovaPlugin\\A8PayInvoke",
+    "com.ttebd.a8ResPlugin": "D:\\IonicProjects\\CordovaPlugin\\A8ResPlugin",
     "cordova-android": "7.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
@@ -52,7 +55,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
-      "com.ttebd.a8PayInvoke": {}
+      "com.ttebd.a8PayInvoke": {},
+      "com.ttebd.a8ResPlugin": {}
     },
     "platforms": [
       "android"

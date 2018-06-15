@@ -105,6 +105,7 @@ export class JlPayProvider {
       "&voucher=" + this.mVoucher +
       "&payType=" + this.mpayType +
       "&sysTrace=" + sysTrace +
+      "&invNo=" + sysTrace +
       "&authNo=123456" +
       "&batchNo=123456" +
       "&orgTxnTime=1212121212" +

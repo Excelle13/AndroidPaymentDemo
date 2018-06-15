@@ -1,23 +1,21 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {AmountCalculationProvider} from "../amount-calculation/amount-calculation";
 
 declare let cordova: any;
+
 @Injectable()
 export class YsPayProvider {
   str: string;
 
-  constructor(public http: HttpClient,
-              private amtCount: AmountCalculationProvider) {
+  constructor(public http: HttpClient) {
     console.log('Hello YsPayProvider Provider');
   }
-
 
   // 格式化日期
   formatDate(fmt) { //author: meizz
     let date = new Date();
-    var o = {
+    let o = {
       "M+": date.getMonth() + 1, //月份
       "d+": date.getDate(), //日
       "H+": date.getHours(), //小时
@@ -27,7 +25,7 @@ export class YsPayProvider {
       "S": date.getMilliseconds() //毫秒
     };
     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
+    for (let k in o)
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
   }
@@ -66,8 +64,8 @@ export class YsPayProvider {
 
   revoke(txnAmt: number, txnData: string) {
 
-
     let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
+
     this.str =
       "TxnType=102" +
       "&RefundAmt=" + txnAmt +
@@ -92,18 +90,19 @@ export class YsPayProvider {
       }, (error) => {
         ob.error(error);
       });
-
     });
   }
 
-  refund(txnAmt: number, invNo: string,txnData:string) {
+  refund(txnAmt: number, invNo: string, txnData: string) {
     let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
     this.str =
       "TxnType=103" +
-      "&RefundTxnNo=000087"  +
+      "&RefundTxnNo="+invNo +
       "&RefundAmt=" + txnAmt +
+      "&OrgMultData=" + txnData +
       "&PayMode=1" +
       "&CurrencyCode=156" +
+      "&MerCode=mall001" +
       "&TxnReqTime=" + TxnReqTime;
 
     return Observable.create(ob => {
@@ -131,8 +130,8 @@ export class YsPayProvider {
     let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
     this.str =
       "TxnType=104" +
-      "&OrgTxnNo=" + invNo;
-
+      "&OrgTxnNo=10000001"+
+      "&MerCode=10000001";
 
     return Observable.create(ob => {
       cordova.plugins.A8PayInvoke.invokeJL({
@@ -153,7 +152,6 @@ export class YsPayProvider {
       });
 
     })
-
 
   }
 
