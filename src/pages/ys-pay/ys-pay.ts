@@ -29,7 +29,7 @@ export class YsPayPage {
   consume() {
 
     let params = {
-      TxnAmt: "0.01",
+      TxnAmt: this.txnAmt,
       MerchantTxnNo: "080909882",
       MerCode: "Pos001"
     };
@@ -53,8 +53,13 @@ export class YsPayPage {
 
     console.log("消费成功返回来的数据--", this.consumeData);
     console.log("消费成功返回来的数据--", this.consumeData['RRN']);
+    let params = {
+      RefundAmt: this.txnAmt,
+      OrgMultData: this.consumeData['body']['MultData'],
+      MerCode: "POS001"
+    };
 
-    this.ysPay.revoke(this.txnAmt, this.consumeData['MultData']).subscribe((data) => {
+    this.nysPay.revoke(params).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;
@@ -62,7 +67,15 @@ export class YsPayPage {
   }
 
   refund() {
-    this.ysPay.refund(this.txnAmt, this.invNO, this.consumeData['MultData']).subscribe((data) => {
+
+    let params = {
+      RefundTxnNo: "000010",
+      RefundAmt: this.txnAmt,
+      OrgMerchantID: "wewew",
+      OrgMultData: this.consumeData['body']['MultData'],
+      MerCode: "POS001"
+    };
+    this.nysPay.refund(params).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;
@@ -70,7 +83,15 @@ export class YsPayPage {
   }
 
   transactionQuery() {
-    this.ysPay.transactionQuery(this.invNO).subscribe((data) => {
+
+    let params = {
+      RefundTxnNo: "000010",
+      TxnAmt: this.txnAmt,
+      QueryType: "",
+      OrgTxnNo: "wewew",
+      MerCode: "POS001"
+    };
+    this.nysPay.transactionQuery(params).subscribe((data) => {
       this.result = data;
     }, err => {
       this.result = err;

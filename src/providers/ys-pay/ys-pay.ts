@@ -51,7 +51,7 @@ export class YsPayProvider {
       }, {}, (result) => {
         // let rc = result['rc'];
         let rep = result['RespCode'];
-        if (rep != '0000') {
+        if (rep == '00') {
           ob.next(result);
         } else {
           ob.error(result);
@@ -93,11 +93,12 @@ export class YsPayProvider {
     });
   }
 
+  // 退款
   refund(txnAmt: number, invNo: string, txnData: string) {
     let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
     this.str =
       "TxnType=103" +
-      "&RefundTxnNo="+invNo +
+      // "&RefundTxnNo=" + invNo +
       "&RefundAmt=" + txnAmt +
       "&OrgMultData=" + txnData +
       "&PayMode=1" +
@@ -112,7 +113,7 @@ export class YsPayProvider {
         "intentstart": "startActivityForResult"
       }, {}, (result) => {
         let rep = result['RespCode'];
-        if (rep != '0000') {
+        if (rep != '000') {
           ob.next(result);
         } else {
           ob.error(result);
@@ -130,7 +131,7 @@ export class YsPayProvider {
     let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
     this.str =
       "TxnType=104" +
-      "&OrgTxnNo=10000001"+
+      "&OrgTxnNo=10000001" +
       "&MerCode=10000001";
 
     return Observable.create(ob => {
