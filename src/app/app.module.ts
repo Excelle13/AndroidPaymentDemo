@@ -14,8 +14,10 @@ import {JlPayProvider} from '../providers/jl-pay/jl-pay';
 import {YsPayProvider} from '../providers/ys-pay/ys-pay';
 import {HttpClientModule} from "@angular/common/http";
 import {AmountCalculationProvider} from '../providers/amount-calculation/amount-calculation';
-import { NjlPayProvider } from '../providers/njl-pay/njl-pay';
-import { NysPayProvider } from '../providers/nys-pay/nys-pay';
+import {NjlPayProvider} from '../providers/njl-pay/njl-pay';
+import {NysPayProvider} from '../providers/nys-pay/nys-pay';
+import {FileRwPage} from "../pages/file-rw/file-rw";
+import {File} from "@ionic-native/file";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { NysPayProvider } from '../providers/nys-pay/nys-pay';
     HomePage,
     ListPage,
     JlPayPage,
-    YsPayPage
+    YsPayPage,
+    FileRwPage
   ],
   imports: [
     BrowserModule,
@@ -36,9 +39,11 @@ import { NysPayProvider } from '../providers/nys-pay/nys-pay';
     HomePage,
     ListPage,
     JlPayPage,
-    YsPayPage
+    YsPayPage,
+    FileRwPage
   ],
   providers: [
+    File,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

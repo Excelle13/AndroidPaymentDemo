@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import {YsPayPage} from "../pages/ys-pay/ys-pay";
 import {JlPayPage} from "../pages/jl-pay/jl-pay";
+import {FileRwPage} from "../pages/file-rw/file-rw";
 
 @Component({
   templateUrl: 'app.html'
@@ -14,7 +15,7 @@ import {JlPayPage} from "../pages/jl-pay/jl-pay";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = JlPayPage;
+  rootPage: any = FileRwPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -26,7 +27,8 @@ export class MyApp {
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
       { title: '银石', component: YsPayPage },
-      { title: '嘉利', component: JlPayPage }
+      { title: '嘉利', component: JlPayPage },
+      { title: '文件读写', component: FileRwPage}
     ];
 
   }
