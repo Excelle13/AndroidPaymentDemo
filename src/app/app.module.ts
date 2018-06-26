@@ -18,6 +18,9 @@ import {NjlPayProvider} from '../providers/njl-pay/njl-pay';
 import {NysPayProvider} from '../providers/nys-pay/nys-pay';
 import {FileRwPage} from "../pages/file-rw/file-rw";
 import {File} from "@ionic-native/file";
+import {DatePickerPage} from "../pages/date-picker/date-picker";
+import {DirectivesModule} from "../directives/directives.module";
+
 
 @NgModule({
   declarations: [
@@ -26,12 +29,14 @@ import {File} from "@ionic-native/file";
     ListPage,
     JlPayPage,
     YsPayPage,
-    FileRwPage
+    FileRwPage,
+    DatePickerPage,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
+    DirectivesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,7 +45,10 @@ import {File} from "@ionic-native/file";
     ListPage,
     JlPayPage,
     YsPayPage,
-    FileRwPage
+    FileRwPage,
+    DatePickerPage,
+
+
   ],
   providers: [
     File,
@@ -51,7 +59,7 @@ import {File} from "@ionic-native/file";
     YsPayProvider,
     AmountCalculationProvider,
     NjlPayProvider,
-    NysPayProvider
+    NysPayProvider,
   ]
 })
 export class AppModule {

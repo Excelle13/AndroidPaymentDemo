@@ -13,42 +13,26 @@ export class FileRwPage {
   readText;
   writeText;
   createDirStatus;
-
   allDir;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public file: File) {
-
-
-    this.allDir=`applicationDirectory=${this.file.applicationDirectory}
-    applicationDirectory=${this.file.applicationDirectory}
-    cacheDirectory=${this.file.cacheDirectory}
-    dataDirectory=${this.file.dataDirectory}
-    externalRootDirectory=${this.file.externalRootDirectory}
-    externalApplicationStorageDirectory=${this.file.externalApplicationStorageDirectory}
-    externalCacheDirectory=${this.file.externalCacheDirectory}
-    externalDataDirectory=${this.file.externalDataDirectory}
-    `
-
   }
 
   ionViewDidLoad() {
+
     console.log('ionViewDidLoad FileRwPage');
-
-
     this.file.checkDir(this.file.dataDirectory, 'mydir')
       .then(_ => console.log('Directory exists'))
       .catch(err => console.log('Directory doesn\'t exist'));
-
-
   }
 
 
   saveFile() {
     let str = "hello,world! " + this.txt;
     console.log("要保存的文本为--》", str);
-    this.file.writeFile(this.file.externalRootDirectory, "text.txt", str, {replace: true}).then((res) => {
+    this.file.writeFile(this.file.dataDirectory+"/tempTxt", "text.txt", str, {replace: true}).then((res) => {
       console.log(res);
       this.writeText = res;
     }).catch(err => {
@@ -59,7 +43,7 @@ export class FileRwPage {
 
   readFile() {
 
-    this.file.readAsText(this.file.externalRootDirectory, "text.txt").then(res => {
+    this.file.readAsText(this.file.dataDirectory+"/tempTxt", "text.txt").then(res => {
       this.readText = res;
     }).catch(err => {
       this.readText = err;
@@ -75,9 +59,9 @@ export class FileRwPage {
     externalApplicationStorageDirectory=${this.file.externalApplicationStorageDirectory}
     externalCacheDirectory=${this.file.externalCacheDirectory}
     externalDataDirectory=${this.file.externalDataDirectory}
-    `
+    `;
 
-    this.file.createDir(this.file.externalRootDirectory, "tempTxt", true).then(
+    this.file.createDir(this.file.dataDirectory, "tempTxt", true).then(
       res=>{
         this.createDirStatus = res;
       }

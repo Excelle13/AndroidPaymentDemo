@@ -8,6 +8,7 @@ import { ListPage } from '../pages/list/list';
 import {YsPayPage} from "../pages/ys-pay/ys-pay";
 import {JlPayPage} from "../pages/jl-pay/jl-pay";
 import {FileRwPage} from "../pages/file-rw/file-rw";
+import {DatePickerPage} from "../pages/date-picker/date-picker";
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +16,7 @@ import {FileRwPage} from "../pages/file-rw/file-rw";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = FileRwPage;
+  rootPage: any = DatePickerPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -28,7 +29,8 @@ export class MyApp {
       { title: 'List', component: ListPage },
       { title: '银石', component: YsPayPage },
       { title: '嘉利', component: JlPayPage },
-      { title: '文件读写', component: FileRwPage}
+      { title: '文件读写', component: FileRwPage},
+      { title: '日期选择', component: DatePickerPage}
     ];
 
   }
