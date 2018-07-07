@@ -1,0 +1,64 @@
+page-date-picker {
+
+}
+
+.calendar {
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 166;
+  background: #fff
+}
+
+.cl_body {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+}
+
+.cl_body div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center
+}
+
+.cl_body div button {
+  height: 36px;
+  width: 51.4px
+}
+
+.cl_header {
+  height: 36px;
+  width: 360px;
+}
+
+.cl_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background-color: #ebebeb;
+
+  button {
+    font-size: 16px;
+    background: none;
+    color: #525252;
+  }
+}
+
+.cl_footer {
+  height: 44px;
+  background-color: #caaa75;
+  text-align: center;
+  line-height: 44px;
+  button {
+    font-size: 16px;
+    background: none;
+    color: white;
+  }
+}

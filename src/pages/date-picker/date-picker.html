@@ -1,0 +1,46 @@
+<!--
+  Generated template for the DatePickerPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>datePicker</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="btDatePicker"></div>
+
+  <div class="calendar" [hidden]="showOrHide">
+    <div class="cl_header">
+      <button (click)="toToday()">今天</button>
+      <button [disabled]="lastMonthStatus" (click)="lastMonth()"><</button>
+      <div>2018-6-15</div>
+      <button [disabled]="nextMonthStatus" (click)="nextMonth()">></button>
+      <button (click)="showOrHide=!showOrHide">取消</button>
+    </div>
+    <div class="cl_body">
+      <div>
+        <button *ngFor="let week of weeks" >{{week}}</button>
+      </div>
+    </div>
+    <div class="cl_body">
+      <div *ngFor="let l of calendarArr">
+        <button *ngFor="let x of l" (click)="pickDate(x)" data-picker-btn>{{x}}</button>
+      </div>
+    </div>
+    <div class="cl_footer">
+      <button>确定</button>
+    </div>
+  </div>
+
+</ion-content>

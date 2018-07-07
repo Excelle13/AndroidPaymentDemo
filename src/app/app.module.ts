@@ -20,7 +20,35 @@ import {FileRwPage} from "../pages/file-rw/file-rw";
 import {File} from "@ionic-native/file";
 import {DatePickerPage} from "../pages/date-picker/date-picker";
 import {DirectivesModule} from "../directives/directives.module";
+import {Device} from "@ionic-native/device";
+import {A8ResInvokePage} from "../pages/a8-res-invoke/a8-res-invoke";
+import {IonicLoggerModule, Logger} from "ionic-logger";
 
+
+// const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
+// const token = localStorage.getItem('userToken');
+// const stompConfig: StompConfig = {
+//   // Which server?
+//   url: 'ws://lab.ttooc.xyz/ws',
+//
+//   // Headers
+//   // Typical keys: login, passcode, host
+//   headers: {
+//     jwt: token
+//   },
+//
+//   // How often to heartbeat?
+//   // Interval in milliseconds, set to 0 to disable
+//   heartbeat_in: 0, // Typical value 0 - disabled
+//   heartbeat_out: 200, // Typical value 20000 - every 20 seconds
+//   // Wait in milliseconds before attempting auto reconnect
+//   // Set to 0 to disable
+//   // Typical value 5000 (5 seconds)
+//   reconnect_delay: 2000,
+//
+//   // Will log diagnostics on console
+//   debug: true
+// };
 
 @NgModule({
   declarations: [
@@ -31,12 +59,17 @@ import {DirectivesModule} from "../directives/directives.module";
     YsPayPage,
     FileRwPage,
     DatePickerPage,
+    A8ResInvokePage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
-    DirectivesModule
+    DirectivesModule,
+    IonicLoggerModule.forRoot({
+      docDir: 'MyApp',
+      logDir: 'log'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -47,10 +80,12 @@ import {DirectivesModule} from "../directives/directives.module";
     YsPayPage,
     FileRwPage,
     DatePickerPage,
+    A8ResInvokePage
 
 
   ],
   providers: [
+    Device,
     File,
     StatusBar,
     SplashScreen,
@@ -60,6 +95,12 @@ import {DirectivesModule} from "../directives/directives.module";
     AmountCalculationProvider,
     NjlPayProvider,
     NysPayProvider,
+    Logger,
+   /* StompService,
+    {
+      provide: StompConfig,
+      useValue: stompConfig
+    }*/
   ]
 })
 export class AppModule {

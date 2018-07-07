@@ -32,9 +32,10 @@
   <button ion-button color="primary" (click)="createFileDir()">新建目录</button>
 
 
-  <p *ngIf="writeText">{{writeText|json}}</p>
-  <p *ngIf="readText">{{readText|json}}</p>
-  <p *ngIf="createDirStatus">{{createDirStatus|json}}</p>
+  <p *ngIf="checkFileStatus">check：{{checkFileStatus|json}}</p>
+  <p *ngIf="writeText">write：{{writeText|json}}</p>
+  <p *ngIf="readText">read:{{readText|json}}</p>
+  <p *ngIf="createDirStatus">create:{{createDirStatus|json}}</p>
 
 
   <p>{{allDir|json}}</p>
