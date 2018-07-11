@@ -14,6 +14,13 @@ import {Logger} from "ionic-logger";
 import {FileSystemService} from "../service/fileSystemService";
 import {File} from "@ionic-native/file";
 
+declare const require: any;
+import * as SockJS from 'sockjs-client';
+
+const Stomp = require('stompjs');
+
+
+
 
 @Component({
   templateUrl: 'app.html'
@@ -28,21 +35,60 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
 
 
+  private stompClient;
   constructor(public platform: Platform,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               private logger: Logger,
-              public file: File
+              public file: File,
+              // public notify:NotifyServiceProvider
               // private _stompService: StompService
   ) {
 
+    // const token = localStorage.getItem('userToken');
+
+
+
+    let ws = new SockJS("http://lab.ttooc.xyz/ws");
+    this.stompClient = Stomp.over(ws);
+
+    let that = this;
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOIiwiZGV2aWNlIjoieHh4eHh4eHh4eHh4eHh4eCIsImV4cCI6MTUzMjU5MzQyMn0.AIz24aGHrqTcxE_9cvSV2T_Skt8x8NDjg3nxqGk23uR-lvrKY4lY1A08Q41QuX82K2DYdbZF0mMBPLBxPFgcNA";
+    let headers = {"jwt": token};
+
+    this.stompClient.heartbeat.outgoing = 2000; // client will send heartbeats every 20000ms
+    this.stompClient.heartbeat.incoming = 1000;
+
+
+    this.stompClient.connect(headers, (frame) => {
+
+      /*that.stompClient.subscribe("/user/notify", (message) => {
+          console.log("message---", message.body)
+      });*/
+      that.stompClient.subscribe("/notify", (message) => {
+        console.log("user-----", message.body)
+      });
+      console.log("connect success ，sshow info---", frame)
+
+    }, (err) => {
+      console.log("发生错误了", err);
+
+      // window.setInterval(() => {
+      //     this.stompClient.connect(headers, (frame) => {
+      //     });
+      // }, 5000);
+    });
+
+
+
+
     this.platform.ready().then(() => {
       this.logger.init(new FileSystemService(this.file)).then((status) => {
-        this.logger.info("hello,这是info-log");
+        // this.logger.info("hello,这是info-log");
         this.logger.debug('[Logger] init: ' + status);
       });
 
-      this.logger.info("hello,这是log");
+      // this.logger.info("hello,这是log");
     });
 
 

@@ -23,7 +23,11 @@ import {DirectivesModule} from "../directives/directives.module";
 import {Device} from "@ionic-native/device";
 import {A8ResInvokePage} from "../pages/a8-res-invoke/a8-res-invoke";
 import {IonicLoggerModule, Logger} from "ionic-logger";
-
+import {PrinterServiceProvider} from '../providers/printer-service/printer-service';
+import {LogServiceProvider} from '../providers/log-service/log-service';
+import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
+import {NotifyServiceProvider} from '../providers/notify-service/notify-service';
+import {StompService} from 'ng2-stomp-service';
 
 // const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
 // const token = localStorage.getItem('userToken');
@@ -69,7 +73,12 @@ import {IonicLoggerModule, Logger} from "ionic-logger";
     IonicLoggerModule.forRoot({
       docDir: 'MyApp',
       logDir: 'log'
-    })
+    }),
+    LoggerModule.forRoot({
+      serverLoggingUrl: '/api/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.ERROR
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -96,11 +105,15 @@ import {IonicLoggerModule, Logger} from "ionic-logger";
     NjlPayProvider,
     NysPayProvider,
     Logger,
-   /* StompService,
-    {
-      provide: StompConfig,
-      useValue: stompConfig
-    }*/
+    PrinterServiceProvider,
+    LogServiceProvider,
+    NotifyServiceProvider,
+    StompService
+    /*    StompService,
+        {
+          provide: StompConfig,
+          useValue: stompConfig
+        }*/
   ]
 })
 export class AppModule {
