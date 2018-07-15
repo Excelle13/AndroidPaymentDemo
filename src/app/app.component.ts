@@ -16,6 +16,7 @@ import {File} from "@ionic-native/file";
 
 declare const require: any;
 import * as SockJS from 'sockjs-client';
+import {LogFileListPage} from "../pages/log-file-list/log-file-list";
 
 const Stomp = require('stompjs');
 
@@ -102,13 +103,13 @@ export class MyApp {
       {title: '嘉利', component: JlPayPage},
       {title: '文件读写', component: FileRwPage},
       {title: '日期选择', component: DatePickerPage},
-      {title: 'A8资源调用', component: A8ResInvokePage}
+      {title: 'A8资源调用', component: A8ResInvokePage},
+      {title: '日志文件列表', component: LogFileListPage}
     ];
 
     /*  this._stompService.subscribe('/notify').subscribe((message)=>{
         console.log("notify message----", message);
       });*/
-
   }
 
   initializeApp() {

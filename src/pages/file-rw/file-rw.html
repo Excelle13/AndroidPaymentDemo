@@ -12,9 +12,7 @@
     </button>
     <ion-title>fileRW</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
   <ion-list>
@@ -23,13 +21,14 @@
       <ion-label fixed>文案</ion-label>
       <ion-input type="text" [(ngModel)]="txt"></ion-input>
     </ion-item>
-
-
   </ion-list>
 
   <button ion-button color="primary" (click)="saveFile()">保存文件</button>
   <button ion-button color="primary" (click)="readFile()">读取文件</button>
   <button ion-button color="primary" (click)="createFileDir()">新建目录</button>
+  <p>
+    <button ion-button color="primary" (click)="getFileList()">查看日志文件列表</button>
+  </p>
 
 
   <p *ngIf="checkFileStatus">check：{{checkFileStatus|json}}</p>

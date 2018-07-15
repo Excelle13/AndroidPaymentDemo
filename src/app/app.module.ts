@@ -28,6 +28,8 @@ import {LogServiceProvider} from '../providers/log-service/log-service';
 import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
 import {NotifyServiceProvider} from '../providers/notify-service/notify-service';
 import {StompService} from 'ng2-stomp-service';
+import {LogFileListPage} from "../pages/log-file-list/log-file-list";
+import {ShowLogPage} from "../pages/show-log/show-log";
 
 // const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
 // const token = localStorage.getItem('userToken');
@@ -63,7 +65,9 @@ import {StompService} from 'ng2-stomp-service';
     YsPayPage,
     FileRwPage,
     DatePickerPage,
-    A8ResInvokePage
+    A8ResInvokePage,
+    LogFileListPage,
+    ShowLogPage,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +93,9 @@ import {StompService} from 'ng2-stomp-service';
     YsPayPage,
     FileRwPage,
     DatePickerPage,
-    A8ResInvokePage
+    A8ResInvokePage,
+    LogFileListPage,
+    ShowLogPage,
 
 
   ],

@@ -7,7 +7,7 @@ import {File} from "@ionic-native/file";
   selector: 'page-file-rw',
   templateUrl: 'file-rw.html',
 })
-export class FileRwPage implements OnInit{
+export class FileRwPage implements OnInit {
 
   txt: string;
   readText;
@@ -82,7 +82,7 @@ export class FileRwPage implements OnInit{
   }
 
   writeFile(content: string) {
-    return this.file.writeFile(this.fileDir,this.fileName, content, {replace: true})
+    return this.file.writeFile(this.fileDir, this.fileName, content, {replace: true})
   }
 
   readFile() {
@@ -92,7 +92,7 @@ export class FileRwPage implements OnInit{
 
         this.createDirStatus = res;
 
-        this.file.readAsText(this.fileDir,this.fileName)
+        this.file.readAsText(this.fileDir, this.fileName)
           .then(res => {
             this.readText = res;
           }).catch(err => {
@@ -121,6 +121,14 @@ export class FileRwPage implements OnInit{
   }
 
   ngOnInit(): void {
+  }
+
+  getFileList() {
+    this.file.listDir(this.file.externalRootDirectory, "CRLANDIPOSLog/log").then((date => {
+      this.allDir = date;
+    })).catch((err) => {
+      this.allDir = err;
+    })
   }
 
 }

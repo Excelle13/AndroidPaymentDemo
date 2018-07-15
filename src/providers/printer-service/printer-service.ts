@@ -19,7 +19,7 @@ export class PrinterServiceProvider {
       }, (err) => {
         ob.error(err);
       });
-    }).pipe(last());
+    });
   }
 
   printSalesSummaryTicket(printParams: object): Observable<any> {
@@ -30,7 +30,7 @@ export class PrinterServiceProvider {
         ob.error(err);
       });
 
-    }).pipe(last());
+    });
   }
 
   printSalesSmallSummaryTicket(printParams: object): Observable<any> {
@@ -41,7 +41,7 @@ export class PrinterServiceProvider {
         ob.error(err);
       });
 
-    }).pipe(last());
+    });
   }
 
 

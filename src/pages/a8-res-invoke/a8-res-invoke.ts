@@ -21,14 +21,15 @@ export class A8ResInvokePage {
   printStatus;
 
   saleSmallSummaryParams = {
+    reprint: "",
     storeInfo: [
       {
         storeInfoName: "店铺编号",
-        storeInfoValue: "M02L3HM123",
+        storeInfoValue: "深圳万象城",
       },
       {
         storeInfoName: "店铺名称",
-        storeInfoValue: "H&M",
+        storeInfoValue: "HJKHJKJJHKHJ",
       }, {
         storeInfoName: "收银员",
         storeInfoValue: "Admin(01)",

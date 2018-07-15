@@ -98,4 +98,14 @@ export class YsPayPage {
     })
   }
 
+
+  mana() {
+    this.nysPay.mana().subscribe((data) => {
+      this.result = data;
+    }, err => {
+      this.result = err;
+    })
+  }
+
+
 }

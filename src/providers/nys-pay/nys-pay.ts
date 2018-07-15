@@ -19,6 +19,13 @@ export class NysPayProvider {
       "intent": "android.sssoft.schemeurl.activity",
       "intentstart": "startActivityForResult"
     }
+  }  // 银石调用参数设置
+  invokeManaParams(str: string) {
+    return {
+      "uri": "sssoft://sssoft.uri.activity/payAdmin?" + str,
+      "intent": "android.sssoft.schemeurl.activity",
+      "intentstart": "startActivityForResult"
+    }
   }
 
 
@@ -190,9 +197,43 @@ export class NysPayProvider {
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
   }
+
+
+  // 管理類
+  mana(): Observable<any> {
+
+    let TxnReqTime = this.formatDate("yyyy/MM/dd HH:mm:ss");
+    let str =
+      "TxnType=105" +
+      "&MerCode=mall001" +
+      "&TxnReqTime=" + TxnReqTime;
+
+
+    return Observable.create((ob) => {
+      cordova.plugins.A8PayInvoke.invokeJL(this.invokeManaParams(str), {}, (result) => {
+        let rep = result['RespCode'];
+        if (rep == '00') {
+          ob.next({
+            header: {repCode: "00", message: result['RespDesc']},
+            body: result
+          });
+        } else {
+          ob.error({
+            header: {repCode: result['RespCode'], message: result['RespDesc']},
+            body: result
+          });
+        }
+      }, (error) => {
+        ob.error(error);
+      });
+    });
+
+  }
+
+
 }
 
- interface ConsumeKey {
+interface ConsumeKey {
   TxnAmt: string,
   MerchantTxnNo: string,
   MerCode: string,
@@ -208,7 +249,7 @@ export class NysPayProvider {
   PosNo?: string
 }
 
- interface RevokeKey {
+interface RevokeKey {
   PayMode?: string,
   RefundAmt: string,
   CurrencyCode?: string,
@@ -219,7 +260,7 @@ export class NysPayProvider {
   PosNo?: string
 }
 
- interface RefundKey {
+interface RefundKey {
   PayMode?: string,
   RefundTxnNo: string,
   RefundAmt: string,
@@ -236,7 +277,7 @@ export class NysPayProvider {
   PosNo?: string
 }
 
- interface TransactionQueryKey {
+interface TransactionQueryKey {
   PayMode?: string,
   OrgTxnNo: string,
   QueryType: string,
