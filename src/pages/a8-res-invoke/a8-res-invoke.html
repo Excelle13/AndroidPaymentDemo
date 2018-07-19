@@ -15,6 +15,8 @@
 
 <ion-content padding>
 
+  <input type="number" [(ngModel)]="testNum" >{{testNum}}
+
   <button ion-button color="primary" (click)="printSalesTiket()">销售小票</button>
   <button ion-button color="primary" (click)="printSalesSmallSummaryTiket()">销售小结</button>
   <button ion-button color="primary" (click)="printSalesSummaryTiket()">销售总结</button>

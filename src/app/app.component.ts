@@ -31,10 +31,9 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = A8ResInvokePage;
+  rootPage: any = FileRwPage;
 
   pages: Array<{ title: string, component: any }>;
-
 
   private stompClient;
   constructor(public platform: Platform,

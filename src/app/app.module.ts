@@ -30,6 +30,8 @@ import {NotifyServiceProvider} from '../providers/notify-service/notify-service'
 import {StompService} from 'ng2-stomp-service';
 import {LogFileListPage} from "../pages/log-file-list/log-file-list";
 import {ShowLogPage} from "../pages/show-log/show-log";
+import { FileServiceProvider } from '../providers/file-service/file-service';
+import {FileTransfer} from "@ionic-native/file-transfer";
 
 // const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
 // const token = localStorage.getItem('userToken');
@@ -114,7 +116,9 @@ import {ShowLogPage} from "../pages/show-log/show-log";
     PrinterServiceProvider,
     LogServiceProvider,
     NotifyServiceProvider,
-    StompService
+    StompService,
+    FileServiceProvider,
+    FileTransfer,
     /*    StompService,
         {
           provide: StompConfig,

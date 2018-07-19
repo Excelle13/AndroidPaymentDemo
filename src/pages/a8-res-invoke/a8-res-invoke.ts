@@ -12,13 +12,14 @@ declare let cordova: any;
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-a8-res-invoke',
   templateUrl: 'a8-res-invoke.html',
 })
 export class A8ResInvokePage {
   printStatus;
+
+  testNum;
 
   saleSmallSummaryParams = {
     reprint: "",
@@ -355,7 +356,6 @@ export class A8ResInvokePage {
   }
 
 }
-
 
 interface SaleSummary {
   storeInfo: StoreInfoDetail[];
