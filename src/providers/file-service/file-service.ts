@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {File} from "@ionic-native/file";
 import {Platform} from "ionic-angular";
-// import {FileTransfer, FileTransferObject, FileUploadOptions} from "@ionic-native/file-transfer";
+import {FileTransfer, FileTransferObject, FileUploadOptions} from "@ionic-native/file-transfer";
 import {LogServiceProvider} from "../log-service/log-service";
+import {environment} from "../../environments/environment";
+import {Device} from "@ionic-native/device";
 
 /*
   Generated class for the FileServiceProvider provider.
@@ -17,12 +19,15 @@ export class FileServiceProvider {
   fileName: string = "cipher.txt"; // 加密文件名
   dirName: string = "A8ActiveInfo"; // 加密文件的路径
 
-  // fileTransfer: FileTransferObject = this.transfer.create();
+  allLogFileName: string[] = [];
+
+  fileTransfer: FileTransferObject = this.transfer.create();
 
   constructor(
     public file: File,
     public platform: Platform,
-    // private transfer: FileTransfer,
+    private transfer: FileTransfer,
+    public device: Device,
     public  logService: LogServiceProvider) {
     // this.platform.ready().then(() => {
     this.rootDir = this.file.externalRootDirectory;
@@ -129,22 +134,37 @@ export class FileServiceProvider {
     // });
   }
 
-/*
   // 上传文件
   uploadFile() {
-    let options: FileUploadOptions = {
-      fileKey: 'file',
-      fileName: 'name.jpg',
-      headers: {}
 
-    };
+    this.getFileList().then((data) => {
+      console.log("文件", data);
+      // this.logData = data;
+      for (const fileName of data) {
+        this.allLogFileName.push(fileName['name']);
+      }
 
-    this.fileTransfer.upload('<file path>', '<api endpoint>', options)
-      .then((data) => {
-        // success
-      }, (err) => {
-        // error
-      })
+      let theLastLogFile = this.allLogFileName.pop();
+
+      let options: FileUploadOptions = {
+        fileKey: 'file',
+        fileName: theLastLogFile,
+        headers: {},
+        params: {ecid: this.device.serial}
+      };
+      this.fileTransfer.upload(this.file.externalRootDirectory + this.logDir + "/"+theLastLogFile,
+        environment.baseUrl + '/device/api/test-upload-file', options)
+        .then((data) => {
+          this.logService.logInfo("文件上传", "文件" + theLastLogFile + "上传成功");
+          this.logService.logInfo("文件上传", "成功返回数据" + JSON.stringify(data));
+        }, (err) => {
+          this.logService.logInfo("文件上传", "文件" + theLastLogFile + "上传成功");
+          this.logService.logInfo("文件上传", "失败返回数据"+JSON.stringify(err));
+        })
+    }).catch(err => {
+    });
+
+
   }
 
 
@@ -157,7 +177,7 @@ export class FileServiceProvider {
       // handle error
       console.log('download err: ' + error.toURL());
     });
-  }*/
+  }
 
   getFileList() {
     return new Promise<Array<any>>((resolve, reject) => {
@@ -181,6 +201,5 @@ export class FileServiceProvider {
         reject(err);
       })
     });
-
   }
 }

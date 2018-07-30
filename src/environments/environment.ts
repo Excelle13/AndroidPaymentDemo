@@ -1,5 +1,7 @@
 const baseUrl= 'http://lab.ttooc.xyz';
 // const baseUrl= 'http://193.112.239.236:60443';
+// const baseUrl= 'http://crland.ttoto.net:60443';
+
 export const environment = {
   baseUrl:baseUrl,
   production:false,
@@ -13,6 +15,8 @@ export const environment = {
   applyVip:baseUrl+'/crm/api/join',
   orderList:baseUrl+'/persistence/api/orderByStore',
   message:baseUrl +'/account/api/message',
+  uploadLog: baseUrl + "/device/api/test-upload-file",
   api: '',
   ws: ''
 };
+

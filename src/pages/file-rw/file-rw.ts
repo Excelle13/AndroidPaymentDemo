@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {FileServiceProvider} from "../../providers/file-service/file-service";
-import {FileTransfer, FileTransferObject, FileUploadOptions} from "@ionic-native/file-transfer";
+import {FileTransfer, FileTransferObject} from "@ionic-native/file-transfer";
 import {File} from "@ionic-native/file";
+import {Http, RequestOptions} from "@angular/http";
 
 
 @Component({
@@ -18,6 +19,7 @@ export class FileRwPage {
 
   constructor(public fileService: FileServiceProvider,
               private transfer: FileTransfer,
+              public http: Http,
               private file: File) {
 
     this.allDir = `applicationDirectory=${this.file.applicationDirectory}\n
@@ -41,6 +43,26 @@ export class FileRwPage {
 
   }
 
+  testDelete() {
+
+    const deleteDate = {
+      "id": "5",
+      "itemCode": "null",
+      "projectNo": "12345",
+      "shopNumber": "null"
+    };
+
+
+    // headers: {"Content-Type": "application/json"},
+    // body: deleteDate
+    this.http.delete("http://193.112.239.236:60443/erp/api/delete-pay-keyboard", new RequestOptions({
+      body: deleteDate
+    })).map(res => res.json()).subscribe((data) => {
+      console.log("deletedata--", data);
+    }, error1 => console.log("delete err", error1));
+  }
+
+
   initFile() {
     this.fileService.initFile().then((data) => {
       this.createFileJson = data;
@@ -48,7 +70,13 @@ export class FileRwPage {
     })
   }
 
-  download(){
-    this.fileService.download();
+  uploadFile(){
+    this.fileService.uploadFile();
+  }
+
+  download() {
+    // this.fileService.download();
+
+
   }
 }

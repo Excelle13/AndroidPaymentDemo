@@ -15,12 +15,31 @@
 
 <ion-content padding>
 
-  <input type="number" [(ngModel)]="testNum" >{{testNum}}
+  <input type="number" [(ngModel)]="testNum">{{testNum}}
 
+<p>
   <button ion-button color="primary" (click)="printSalesTiket()">销售小票</button>
+</p>
+<p>
   <button ion-button color="primary" (click)="printSalesSmallSummaryTiket()">销售小结</button>
+</p>
+<p>
   <button ion-button color="primary" (click)="printSalesSummaryTiket()">销售总结</button>
-  <button ion-button color="primary" (click)="frontCamera()">前摄像头</button>
+</p>
+<p>
+  <button ion-button color="primary" (click)="reprintSalesSmallSummaryTiket()">重印销售小票</button>
+</p>
+<p>
+  <button ion-button color="primary" (click)="printSalesReport()">销售报表</button>
+</p>
+<p>
+  <button ion-button color="primary" (click)="printReturnGood()">退货单</button>
+</p>
+<p>
+  <button ion-button color="primary" (click)="printSalesSlip()">银行签购单</button>
+  <button ion-button color="primary" (click)="testCoolMethod()">testCoolMethod</button>
+</p>
+<!--<button ion-button color="primary" (click)="frontCamera()">前摄像头</button>-->
 
-  <p>{{printStatus | json}}</p>
+<p>{{printStatus | json}}</p>
 </ion-content>

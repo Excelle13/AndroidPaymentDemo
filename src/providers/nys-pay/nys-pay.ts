@@ -19,7 +19,9 @@ export class NysPayProvider {
       "intent": "android.sssoft.schemeurl.activity",
       "intentstart": "startActivityForResult"
     }
-  }  // 银石调用参数设置
+  }
+
+  // 银石调用参数设置
   invokeManaParams(str: string) {
     return {
       "uri": "sssoft://sssoft.uri.activity/payAdmin?" + str,

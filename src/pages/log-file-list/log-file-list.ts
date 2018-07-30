@@ -70,6 +70,9 @@ export class LogFileListPage {
     this.navCtrl.push(ShowLogPage, {fileName: fileName});
   }
 
+  uploadTxt(){
+    this.fileService.uploadFile();
+  }
 
   showAlert() {
     const alert = this.alertCtrl.create({

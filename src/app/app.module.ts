@@ -32,6 +32,8 @@ import {LogFileListPage} from "../pages/log-file-list/log-file-list";
 import {ShowLogPage} from "../pages/show-log/show-log";
 import { FileServiceProvider } from '../providers/file-service/file-service';
 import {FileTransfer} from "@ionic-native/file-transfer";
+import {LockAppPage} from "../pages/lock-app/lock-app";
+import {HttpModule} from "@angular/http";
 
 // const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
 // const token = localStorage.getItem('userToken');
@@ -70,8 +72,10 @@ import {FileTransfer} from "@ionic-native/file-transfer";
     A8ResInvokePage,
     LogFileListPage,
     ShowLogPage,
+    LockAppPage
   ],
   imports: [
+    HttpModule,
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
@@ -98,6 +102,7 @@ import {FileTransfer} from "@ionic-native/file-transfer";
     A8ResInvokePage,
     LogFileListPage,
     ShowLogPage,
+    LockAppPage
 
 
   ],

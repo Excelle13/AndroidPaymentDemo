@@ -11,12 +11,15 @@
 <ion-content padding>
   <button ion-button color="primary" (click)="initFile()">初始化文件</button>
   <!--<button ion-button color="primary" (click)="deleteFile()">删除文件</button>-->
-  <!--<button ion-button color="primary" (click)="uploadFile()">上传文件</button>-->
+  <button ion-button color="primary" (click)="uploadFile()">上传文件</button>
   <button ion-button color="primary" (click)="download()">下载文件</button>
 <p>checkDir:{{allDir|json}}</p>
 <p>createDir:{{createDirJson|json}}</p>
 <p>createFileJson:{{createFileJson|json}}</p>
 <p>deleteFileJson:{{deleteFileJson|json}}</p>
+
+  <button ion-button color="primary" (click)="testDelete()">testDelete</button>
+
 
   <!--<input type="text"[(ngModel)]="Boolean(allDir)">-->
 
