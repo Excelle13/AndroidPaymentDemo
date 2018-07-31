@@ -5,12 +5,6 @@ import {AmountCalculationProvider} from "../amount-calculation/amount-calculatio
 
 declare let cordova: any;
 
-/*
-  Generated class for the NjlPayProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class NjlPayProvider {
 
@@ -134,6 +128,7 @@ export class NjlPayProvider {
       });
     });
   }
+
 // 结算
   settlement(params: JLReturnGoodsKey): Observable<any> {
 
@@ -178,7 +173,6 @@ export class NjlPayProvider {
     temp = (this.amtCount.multiply(num, 100)).toString();
     return (Array(12).join('0') + temp.replace(".", "")).slice(-12);
   }
-
 }
 
 interface JLConsumeKey {

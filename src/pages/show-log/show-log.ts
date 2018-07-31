@@ -15,6 +15,7 @@ import {FileServiceProvider} from "../../providers/file-service/file-service";
   selector: 'page-show-log',
   templateUrl: 'show-log.html',
 })
+
 export class ShowLogPage {
 
   logData;
