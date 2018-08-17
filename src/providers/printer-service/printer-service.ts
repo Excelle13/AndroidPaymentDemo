@@ -1,20 +1,25 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {LogServiceProvider} from "../log-service/log-service";
+import {AlertController} from "ionic-angular";
 
 declare let cordova: any;
 
 @Injectable()
 export class PrinterServiceProvider {
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+              public logService: LogServiceProvider,
+              public alertCtr: AlertController) {
     // console.log('Hello PrinterServiceProvider Provider');
   }
 
-  // 销售小票
-  printSalesTicket(printParams: object): Observable<any> {
+// 销售小票
+  printSalesTicket(printParams: object, reprint?: string): Observable<any> {
+    let printTxt = this.formatSalesPrintInfo(printParams, reprint);
     return Observable.create((ob) => {
-      cordova.plugins.A8ResPlugin.printSales(printParams, (res) => {
+      cordova.plugins.A8ResPlugin.printSales(printTxt, (res) => {
         ob.next(res);
       }, (err) => {
         ob.error(err);
@@ -23,7 +28,8 @@ export class PrinterServiceProvider {
   }
 
   // 销售总结
-  printSalesSummaryTicket(printParams: object): Observable<any> {
+  printSalesSummaryTicket(printParams: object, reprint?: string): Observable<any> {
+
     return Observable.create((ob) => {
       cordova.plugins.A8ResPlugin.printSalesSummary(printParams, (res) => {
         ob.next(res);
@@ -34,9 +40,12 @@ export class PrinterServiceProvider {
   }
 
   // 销售小结
-  printSalesSmallSummaryTicket(printParams: object): Observable<any> {
+  printSalesSmallSummaryTicket(printParams: object, reprint?: string): Observable<any> {
+
+    let printTxt = this.formatSalesSmallSummaryInfo(printParams, reprint);
+    console.log("printSalesSmallSummaryTicket--", printTxt);
     return Observable.create((ob) => {
-      cordova.plugins.A8ResPlugin.printSalesSmallSummary(printParams, (res) => {
+      cordova.plugins.A8ResPlugin.printSalesSmallSummary(printTxt, (res) => {
         ob.next(res);
       }, (err) => {
         ob.error(err);
@@ -46,7 +55,7 @@ export class PrinterServiceProvider {
   }
 
   // 签购单
-  printSalesSlipTicket(printParams: object): Observable<any> {
+  printSalesSlipTicket(printParams: object, reprint?: string): Observable<any> {
     return Observable.create((ob) => {
       cordova.plugins.A8ResPlugin.printSalesSlip(printParams, (res) => {
         // console.log("printBankSalesSlipTicket", res);
@@ -60,9 +69,10 @@ export class PrinterServiceProvider {
   }
 
   // 退货单
-  printReturnGoodTicket(printParams: object): Observable<any> {
+  printReturnGoodTicket(printParams: object, reprint?: string): Observable<any> {
+    let printData = this.formatReturnGoodInfo(printParams, reprint);
     return Observable.create((ob) => {
-      cordova.plugins.A8ResPlugin.printReturnGood(printParams, (res) => {
+      cordova.plugins.A8ResPlugin.printReturnGood(printData, (res) => {
         ob.next(res);
       }, (err) => {
         ob.error(err);
@@ -72,21 +82,9 @@ export class PrinterServiceProvider {
   }
 
   // 销售报表
-  printSalesReportTicket(printParams: object): Observable<any> {
+  printSalesReportTicket(printParams: object, reprint?: string): Observable<any> {
     return Observable.create((ob) => {
       cordova.plugins.A8ResPlugin.printSalesReport(printParams, (res) => {
-        ob.next(res);
-      }, (err) => {
-        ob.error(err);
-      });
-
-    });
-  }
-
-  // 测试方法
-  testCoolMethod(test: string) {
-    return Observable.create((ob) => {
-      cordova.plugins.A8ResPlugin.coolMethod(test, (res) => {
         ob.next(res);
       }, (err) => {
         ob.error(err);
@@ -109,6 +107,43 @@ export class PrinterServiceProvider {
     let vip = [];
     let arCode = [];
     let tips = [];
+    let saleSlipLists = [];
+
+    // 签购单
+    let saleSlipArray = params['saleSlip'];
+    for (const saleSlipEle of saleSlipArray) {
+
+      saleSlipLists.push({
+        salesSlipType: saleSlipEle['payMethodName'],
+        salesSlip: [
+          {
+            salesSlipKey: "外部订单",
+            salesSlipValue: saleSlipEle['outId']
+          }, {
+            salesSlipKey: "交易流水",
+            salesSlipValue: saleSlipEle['payId']
+          }, {
+            salesSlipKey: "原流水",
+            salesSlipValue: ""
+          }, {
+            salesSlipKey: "交易类型",
+            salesSlipValue: "销售"
+          }, {
+            salesSlipKey: "交易金额",
+            salesSlipValue: saleSlipEle['value']
+          }, {
+            salesSlipKey: "交易时间",
+            salesSlipValue: saleSlipEle['time']
+          }, {
+            salesSlipKey: "买家ID",
+            salesSlipValue: (params['vipName'] != undefined || params['vipName'] != null) ? params['vipName'] : ""
+          }
+        ]
+
+      })
+    }
+
+
     // 店铺信息
     let storeName = {
       storeInfoName: "商户名称",
@@ -233,7 +268,7 @@ export class PrinterServiceProvider {
       {tipsId: '4', article: params['mallName'] + "保留最终决定权"}
     ];
 
-    return{
+    return {
       reprint: reprint != undefined ? reprint : "",
       barCode: barCode,
       storeInfo: storeInfo,
@@ -242,7 +277,8 @@ export class PrinterServiceProvider {
       payment: payment,
       vip: vip,
       arCode: arCode,
-      tips: tips
+      tips: tips,
+      saleSlipLists: saleSlipLists
     }
 
 
@@ -581,4 +617,128 @@ export class PrinterServiceProvider {
 
   }
 
+  // 格式化销售小结数据
+  private formatSalesSmallSummaryInfo(params: any, reprint?: string) {
+
+    let storeInfo;
+    let payments = [];
+    let bills = [];
+
+    // 店铺信息
+    let storeName = {
+      storeInfoName: "商户名称",
+      storeInfoValue: params['storeName']
+    };
+    let storeCode = {
+      storeInfoName: "商户编号",
+      storeInfoValue: params['storeId']
+    };
+    let userSale = {
+      storeInfoName: "收银员",
+      storeInfoValue: params['userSale']
+    };
+
+    //交易日期
+    let transactionLog = {
+      storeInfoName: "交易日期",
+      storeInfoValue: params['startTime']
+    };
+
+    storeInfo = [
+      storeName, storeCode, userSale, transactionLog
+    ];
+
+
+    // 单据类型
+    let billType = params['OrderTypeList'];
+    for (let x in billType) {
+      // console.log(this.saleSummary.saleTypeList[x]);
+      bills.push({
+        billType: billType[x]['orderType'],
+        billSum: billType[x]['orderNums'],
+        billAmount: billType[x]['orderTotalValue']
+      });
+    }
+
+    // 付款方式
+    let paymentType = params['saleTypeList'];
+    for (let c in paymentType) {
+
+      payments.push({
+        paymentMethod: paymentType[c]['payForType'],
+        paymentSum: paymentType[c]['paysNum'],
+        paymentAmount: paymentType[c]['thisPayMethodsValue']
+      });
+
+      console.log(payments);
+
+    }
+
+    return {
+      reprint: reprint != undefined ? reprint : "",
+      storeInfo: storeInfo,
+      bill: bills,
+      billTotal: params['totalSaleValue'],
+      payment: payments,
+      paymentTotal: params['totalSaleValue'],
+    }
+
+  }
+
+  // 测试方法
+  testCoolMethod(test: string) {
+    return Observable.create((ob) => {
+      cordova.plugins.A8ResPlugin.coolMethod(test, (res) => {
+        ob.next(res);
+      }, (err) => {
+        ob.error(err);
+      });
+
+    });
+  }
+
+
+  public printFailedAlert(err, printName: string) {
+    if (err["code"] === "0001") {
+
+      let pop = this.alertCtr.create({
+        title: '提示',
+        message: err['message'],
+        buttons: [
+          {
+            text: '确定',
+            handler: () => {
+
+            }
+          }
+        ],
+        enableBackdropDismiss: false
+      });
+      pop.present();
+
+      this.logService.logInfo(printName, "打印错误-" + err['message']);
+
+    }
+  };
+
+  public printSuccessAlert(res, printName: string) {
+    if (res["code"] === "0000") {
+      let pop = this.alertCtr.create({
+        title: '提示',
+        message: res['message'],
+        buttons: [
+          {
+            text: '确定',
+            handler: () => {
+
+            }
+          }
+        ],
+        enableBackdropDismiss: false
+      });
+      pop.present();
+
+      this.logService.logInfo(printName, "打印成功-" + res['message']);
+    }
+  };
 }

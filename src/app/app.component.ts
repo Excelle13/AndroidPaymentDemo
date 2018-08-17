@@ -20,6 +20,7 @@ import {NotifyServiceProvider} from "../providers/notify-service/notify-service"
 declare const require: any;
 import * as SockJS from 'sockjs-client';
 import {HttpClient} from "@angular/common/http";
+import {A8printerPage} from "../pages/a8printer/a8printer";
 
 const Stomp = require('stompjs');
 
@@ -32,7 +33,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = FileRwPage;
+  rootPage: any = A8printerPage;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -43,7 +44,7 @@ export class MyApp {
               public splashScreen: SplashScreen,
               private logger: Logger,
               public file: File,
-              public notifyService: NotifyServiceProvider,
+              // public notifyService: NotifyServiceProvider,
               // public http:HttpClient
               // private _stompService: StompService
   ) {
@@ -57,9 +58,6 @@ export class MyApp {
     // this.notifyService.notify().subscribe((data) => {
     //   console.log("app.component notify----", data);
     // });
-
-
-
 
 
     // const token = localStorage.getItem('userToken');

@@ -30,10 +30,15 @@
 
   </ion-list>
   <p>
+    <button ion-button color="primary" (click)="newConsume()">新方法测试JL消费</button>
     <button ion-button color="primary" (click)="consume()">消费</button>
     <button ion-button color="primary" (click)="revoke()">撤销</button>
     <button ion-button color="primary" (click)="returnGoods()">退货</button>
     <button ion-button color="primary" (click)="settlement()">结算</button>
+    <button ion-button color="primary" (click)="shoppingCard()">购物卡</button>
+    <button ion-button color="primary" (click)="integralCard()">积分卡</button>
   </p>
   <h5>{{result|json}}</h5>
+
+
 </ion-content>

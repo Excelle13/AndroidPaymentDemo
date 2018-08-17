@@ -30,10 +30,14 @@ import {NotifyServiceProvider} from '../providers/notify-service/notify-service'
 import {StompService} from 'ng2-stomp-service';
 import {LogFileListPage} from "../pages/log-file-list/log-file-list";
 import {ShowLogPage} from "../pages/show-log/show-log";
-import { FileServiceProvider } from '../providers/file-service/file-service';
+import {FileServiceProvider} from '../providers/file-service/file-service';
 import {FileTransfer} from "@ionic-native/file-transfer";
 import {LockAppPage} from "../pages/lock-app/lock-app";
 import {HttpModule} from "@angular/http";
+import {CryptoDesUtilProvider} from '../providers/crypto-des-util/crypto-des-util';
+import {PayInvokeProvider} from '../providers/pay-invoke/pay-invoke';
+import {A8printerPage} from "../pages/a8printer/a8printer";
+import {BarcodeScanner} from "@ionic-native/barcode-scanner";
 
 // const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrczIzMDAxMDEiLCJhdXRoIjoiUk9MRV9VU0VSIiwiZGV2aWNlIjoiMTIzNDU2Nzg5MDExMjY1MCIsIm1hbGwiOiIwMjAyQTAwMyIsInN0b3JlIjoiS1MyMzAwMSIsImV4cCI6MTUzMjg0NjY3MH0.qyTS5P31FVYhF7iXjUMisH0Gxsuoz055LkZC_bmrjqG_-C-3jn_qGf0wa0XjFv0uds4MPhLYLRzcsKncwbpbFQ";
 // const token = localStorage.getItem('userToken');
@@ -72,7 +76,8 @@ import {HttpModule} from "@angular/http";
     A8ResInvokePage,
     LogFileListPage,
     ShowLogPage,
-    LockAppPage
+    LockAppPage,
+    A8printerPage
   ],
   imports: [
     HttpModule,
@@ -102,11 +107,13 @@ import {HttpModule} from "@angular/http";
     A8ResInvokePage,
     LogFileListPage,
     ShowLogPage,
-    LockAppPage
+    LockAppPage,
+    A8printerPage
 
 
   ],
   providers: [
+    BarcodeScanner,
     Device,
     File,
     StatusBar,
@@ -124,6 +131,8 @@ import {HttpModule} from "@angular/http";
     StompService,
     FileServiceProvider,
     FileTransfer,
+    CryptoDesUtilProvider,
+    PayInvokeProvider,
     /*    StompService,
         {
           provide: StompConfig,

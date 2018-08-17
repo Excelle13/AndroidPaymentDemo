@@ -197,7 +197,6 @@ export class A8ResInvokePage {
         paymentTotal: "230000.39"
       },
     ]
-
   };
 
   salesParams = {
@@ -287,8 +286,65 @@ export class A8ResInvokePage {
       {tipsId: '2', article: "请出示有效小票，并于购买日起14日内进行换货，请出示有效小票，并于购买日起14日内进行换货"},
       {tipsId: '3', article: "请出示有效小票，并于购买日起14日内进行换货"},
       {tipsId: '4', article: "H&M保留最终决定权"}
-    ]
+    ],
+    saleSlipLists: [
+      {
+        salesSlipType: "支付宝签购单",
+        salesSlip: [
+          {
+            salesSlipKey: "外部订单",
+            salesSlipValue: "698718238688172378772"
+          }, {
+            salesSlipKey: "交易流水",
+            salesSlipValue: "1636127782456172938716"
+          }, {
+            salesSlipKey: "原流水",
+            salesSlipValue: "POS001"
+          }, {
+            salesSlipKey: "交易类型",
+            salesSlipValue: "销售"
+          }, {
+            salesSlipKey: "交易金额",
+            salesSlipValue: "￥ 300,00"
+          }, {
+            salesSlipKey: "交易时间",
+            salesSlipValue: "2018/06/13 11:10:22"
+          }, {
+            salesSlipKey: "买家ID",
+            salesSlipValue: "133*****02"
+          }
 
+        ]
+      },
+      {
+        salesSlipType: "微信签购单",
+        salesSlip: [
+          {
+            salesSlipKey: "外部订单",
+            salesSlipValue: "698718238688172378772"
+          }, {
+            salesSlipKey: "交易流水",
+            salesSlipValue: "1636127782456172938716"
+          }, {
+            salesSlipKey: "原流水",
+            salesSlipValue: "POS001"
+          }, {
+            salesSlipKey: "交易类型",
+            salesSlipValue: "销售"
+          }, {
+            salesSlipKey: "交易金额",
+            salesSlipValue: "￥ 300,00"
+          }, {
+            salesSlipKey: "交易时间",
+            salesSlipValue: "2018/06/13 11:10:22"
+          }, {
+            salesSlipKey: "买家ID",
+            salesSlipValue: "133*****02"
+          }
+
+        ]
+      }
+    ]
   };
 
   reprintSmallSummaryParams = {
@@ -361,7 +417,6 @@ export class A8ResInvokePage {
     "timestamp": "2018-07-12T11:21:00.019Z",
     "startTime": "20180712192064"
   };
-
   salesReportParams = {
     reprint: "重印",
     storeInfo: [
@@ -529,7 +584,6 @@ export class A8ResInvokePage {
     ]
   };
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public printService: PrinterServiceProvider,
               public logService: LogServiceProvider,
@@ -610,8 +664,10 @@ export class A8ResInvokePage {
   printSalesReport() {
     this.printService.printSalesReportTicket(this.salesReportParams).subscribe((res) => {
       this.printStatus = res;
+      this.printService.printSuccessAlert(res, "打印销售报表")
     }, err => {
       this.printStatus = err;
+      this.printService.printFailedAlert(err, "打印销售报表")
     });
   }
 
@@ -634,13 +690,19 @@ export class A8ResInvokePage {
     });
   }
 
-  testCoolMethod(){
-    this.printService.testCoolMethod("hahahha").subscribe((res) => {
-      this.printStatus = res;
-    }, err => {
-      this.printStatus = err;
-    });
+  testCoolMethod() {
+    /* this.printService.testCoolMethod("hahahha").subscribe((res) => {
+
+       this.printStatus = res;
+     }, err => {
+
+
+       this.printStatus = err;
+     });*/
+
+    // this.
   }
+
 
   private formatSalesPrintInfo(params: any, reprint?: string) {
 
@@ -793,30 +855,5 @@ export class A8ResInvokePage {
 
 
   }
-
-}
-
-interface SaleSummary {
-  storeInfo: StoreInfoDetail[];
-  bill: Bill[];
-  payment: Payment[];
-}
-
-interface StoreInfoDetail {
-  storeInfoType,
-  storeInfoValue,
-}
-
-interface Bill {
-  billType,
-  billSum,
-  billAmount,
-}
-
-interface Payment {
-
-  paymentMethod,
-  paymentSum,
-  paymentAmount,
 
 }

@@ -13,14 +13,44 @@
   <!--<button ion-button color="primary" (click)="deleteFile()">删除文件</button>-->
   <button ion-button color="primary" (click)="uploadFile()">上传文件</button>
   <button ion-button color="primary" (click)="download()">下载文件</button>
-<p>checkDir:{{allDir|json}}</p>
-<p>createDir:{{createDirJson|json}}</p>
-<p>createFileJson:{{createFileJson|json}}</p>
-<p>deleteFileJson:{{deleteFileJson|json}}</p>
+  <button ion-button color="primary" (click)="createFileTest()">建立文件</button>
+
+  <p *ngIf="allDir">checkDir:{{allDir|json}}</p>
+  <p *ngIf="createDirJson">createDir:{{createDirJson|json}}</p>
+  <p *ngIf="createFileJson">createFileJson:{{createFileJson|json}}</p>
+  <p *ngIf="deleteFileJson">deleteFileJson:{{deleteFileJson|json}}</p>
+
+  <p *ngIf="createFileTestJson1">createFileTestJson1:{{createFileTestJson1|json}}</p>
+  <p *ngIf="createFileTestJson2">createFileTestJson2:{{createFileTestJson2|json}}</p>
+  <p *ngIf="writeFileTestJson1">writeFileTestJson1:{{writeFileTestJson1|json}}</p>
+  <p *ngIf="writeFileTestJson2">writeFileTestJson2:{{writeFileTestJson2|json}}</p>
 
   <button ion-button color="primary" (click)="testDelete()">testDelete</button>
 
+  <!--<p>明文:hello,密文:{{encryptoTxt}}</p>-->
+  <!--<p>密文:+HlsxsK7MLE=,明文:{{decryptoTxt}}</p>-->
 
-  <!--<input type="text"[(ngModel)]="Boolean(allDir)">-->
 
+  <form [formGroup]="encryptDecryptForm">
+    <ion-list>
+
+      <ion-item>
+        <ion-label fixed>加密</ion-label>
+        <ion-input type="text" formControlName="plainTxt" (ionChange)="encrypt()"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>解密</ion-label>
+        <ion-input type="text" formControlName="cipherTxt"  (ionChange)="decrypt()"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+
+
+  <p>加密结果:{{plainTxtResult}}</p>
+  <p>解密结果:{{cipherTxtResult}}</p>
+
+  <ion-input type="text" placeholder="111111111111111" (focus)="focusIn()"></ion-input>
+  <ion-input type="text" placeholder="222222222222222" autofocus="autofocus" (blur)="focusVanish()"
+             (focus)="focusFlicker()" style="width: 0;height: 0"></ion-input>
+  <p id="focusB"><span>束带dfdfgdfgdsfgef结发</span><span [hidden]="focusPointFlag"> |</span></p>
 </ion-content>

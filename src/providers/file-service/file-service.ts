@@ -29,9 +29,9 @@ export class FileServiceProvider {
     private transfer: FileTransfer,
     public device: Device,
     public  logService: LogServiceProvider) {
-    // this.platform.ready().then(() => {
-    this.rootDir = this.file.externalRootDirectory;
-    // });
+    this.platform.ready().then(() => {
+      this.rootDir = this.file.externalRootDirectory;
+    });
   }
 
 
@@ -75,8 +75,8 @@ export class FileServiceProvider {
     return this.file.writeExistingFile(this.rootDir, fileName, text);
   }
 
-  writeFile(fileName: string, text: string) {
-    return this.file.writeFile(this.rootDir, fileName, text);
+  writeFile(fileDir: string, fileName: string, text: string) {
+    return this.file.writeFile(this.rootDir + "/" + fileDir, fileName, text, {replace: true});
   }
 
 
@@ -152,14 +152,14 @@ export class FileServiceProvider {
         headers: {},
         params: {ecid: this.device.serial}
       };
-      this.fileTransfer.upload(this.file.externalRootDirectory + this.logDir + "/"+theLastLogFile,
+      this.fileTransfer.upload(this.file.externalRootDirectory + this.logDir + "/" + theLastLogFile,
         environment.baseUrl + '/device/api/test-upload-file', options)
         .then((data) => {
           this.logService.logInfo("文件上传", "文件" + theLastLogFile + "上传成功");
           this.logService.logInfo("文件上传", "成功返回数据" + JSON.stringify(data));
         }, (err) => {
           this.logService.logInfo("文件上传", "文件" + theLastLogFile + "上传成功");
-          this.logService.logInfo("文件上传", "失败返回数据"+JSON.stringify(err));
+          this.logService.logInfo("文件上传", "失败返回数据" + JSON.stringify(err));
         })
     }).catch(err => {
     });

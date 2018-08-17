@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {AmountCalculationProvider} from "../amount-calculation/amount-calculation";
 
+
 declare let cordova: any;
 
 @Injectable()
@@ -55,7 +56,7 @@ export class NjlPayProvider {
     });
   }
 
-// 消费
+// 撤销
   revoke(params: JLRevokeKey): Observable<any> {
 
     let str =
@@ -132,6 +133,7 @@ export class NjlPayProvider {
 // 结算
   settlement(params: JLReturnGoodsKey): Observable<any> {
 
+
     let str =
       "txnType=" + "R" +
       "&payType=" + "001" +
@@ -167,6 +169,93 @@ export class NjlPayProvider {
     });
   }
 
+// 积分卡
+  integralCard(): Observable<any>{
+    let mallCode = "wxtd001";
+    let pos_no = "p001";
+    let tellerNo = "t001";
+    let mVoucher = "123456211344" + parseInt((Math.random() * 1000).toString());
+    let mpayType = "005";
+    let minvNo = "000000";
+    let msysTrace = "000000";
+    let txnTime = "0312121212";
+
+    let str = "txnAmt=000000000001" +
+      "&txnType=C" +
+      "&mallCode=" + mallCode +
+      "&posNo=" + pos_no +
+      "&voucher=" + mVoucher +
+      "&payType=" + mpayType +
+      "&invNo=" + minvNo +
+      "&sysTrace=" + msysTrace +
+      "&tellerNo=" + tellerNo +
+      "&txnTime=" + txnTime;
+
+    return Observable.create((ob) => {
+
+
+      cordova.plugins.A8PayInvoke.invokeJL(this.invokeParams(str), {}, (result) => {
+        let rep = result['rc'];
+        if (rep == '00') {
+          ob.next({
+            header: {repCode: "00", message: result['rspText']},
+            body: result
+          });
+        } else {
+          ob.error({
+            header: {repCode: result['rc'], message: result['rspText']},
+            body: result
+          });
+        }
+      }, (error) => {
+        ob.error(error);
+      });
+    });
+  }
+
+  // 购物卡
+  shoppingCard(): Observable<any> {
+    let mallCode = "wxtd001";
+    let pos_no = "p001";
+    let tellerNo = "t001";
+    let mVoucher = "123456211344" + parseInt((Math.random() * 1000).toString());
+    let mpayType = "002";
+    let minvNo = "000000";
+    let msysTrace = "000000";
+    let txnTime = "0312121212";
+
+    let str = "txnAmt=000000000001" +
+      "&txnType=C" +
+      "&mallCode=" + mallCode +
+      "&posNo=" + pos_no +
+      "&voucher=" + mVoucher +
+      "&payType=" + mpayType +
+      "&invNo=" + minvNo +
+      "&sysTrace=" + msysTrace +
+      "&tellerNo=" + tellerNo +
+      "&txnTime=" + txnTime;
+
+    return Observable.create((ob) => {
+
+      cordova.plugins.A8PayInvoke.invokeJL(this.invokeParams(str), {}, (result) => {
+        let rep = result['rc'];
+        if (rep == '00') {
+          ob.next({
+            header: {repCode: "00", message: result['rspText']},
+            body: result
+          });
+        } else {
+          ob.error({
+            header: {repCode: result['rc'], message: result['rspText']},
+            body: result
+          });
+        }
+      }, (error) => {
+        ob.error(error);
+      });
+    });
+
+  }
 
   formatAmt(num: number) {
     let temp;
